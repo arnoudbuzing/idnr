@@ -223,6 +223,13 @@ const ACTIVITY_LABELS = {
   accessible: "ADA Accessible"
 };
 
+/**
+ * Build a Google Maps Directions URL that defaults origin to the user's current location.
+ */
+function getDirectionsUrl(park) {
+  return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(park.address)}`;
+}
+
 // State
 const state = {
   search: "",
@@ -366,7 +373,7 @@ function renderParks() {
             <button type="button" class="btn btn--primary" data-open-park="${park.id}">
               Quick Guide
             </button>
-            <a class="btn btn--secondary" href="${park.directionsUrl}" target="_blank" rel="noopener noreferrer">
+            <a class="btn btn--secondary" href="${getDirectionsUrl(park)}" target="_blank" rel="noopener noreferrer">
               Directions
             </a>
           </div>
@@ -499,7 +506,7 @@ function openParkModal(parkId) {
     modalAdvisoryWrap.hidden = true;
   }
 
-  modalDirectionsLink.href = park.directionsUrl;
+  modalDirectionsLink.href = getDirectionsUrl(park);
   modalReserveLink.href = park.reserveUrl;
   modalPhoneLink.href = `tel:${park.phone.replace(/[^0-9]/g, "")}`;
   modalPhoneLink.textContent = `Call ${park.phone}`;
